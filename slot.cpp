@@ -7,3 +7,7 @@
 //
 
 #include "slot.hpp"
+
+using namespace std;
+
+Slot:: Slot(const string name, const int location): name(name), location(location){}

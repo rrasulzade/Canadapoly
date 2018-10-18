@@ -9,6 +9,16 @@
 #ifndef slot_hpp
 #define slot_hpp
 
-#include <stdio.h>
+#include <iostream>
+#include <string>
+
+class Slot {
+    const std::string name;
+    const int location;
+
+public:
+    Slot(const std::string name, const int location);
+
+};
 
 #endif /* slot_hpp */

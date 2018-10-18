@@ -7,3 +7,13 @@
 //
 
 #include "player.hpp"
+
+#define START_BALANCE 1500
+#define START_POSITION 0
+
+
+using namespace std;
+
+int Player::playerID = 0;
+
+Player::Player(const string name, const char piece): name(name), piece(piece), id(playerID++), money(START_BALANCE), position(START_POSITION) {}

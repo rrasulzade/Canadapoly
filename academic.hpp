@@ -10,6 +10,8 @@
 #define academic_hpp
 
 #include <iostream>
+#include <string>
+
 #include "ownable.hpp"
 
 
@@ -19,7 +21,7 @@ class Academic: public Ownable{
     int upgrade_level;
     int tuition_costs[6];
 public:
-    Academic(const string name, int status, const int cost, const int location, Player* player, const int monopoly_block, const int upgrade_cost, int upgrade_level, const int tuitions[]);
+    Academic(const std::string name, int status, const int cost, const int location, const int monopoly_block, const int upgrade_cost, int upgrade_level, const int tuitions[]);
     ~Academic();
 
 };

@@ -9,6 +9,23 @@
 #ifndef gameBoard_hpp
 #define gameBoard_hpp
 
-#include <stdio.h>
+#include <iostream>
+
+
+class Player;
+class Slot;
+
+class GameBoard{
+    int totalPlayers;
+    Player **players;
+    Slot *slots[40];
+
+public:
+    GameBoard();
+    ~GameBoard();
+
+    void init();
+
+};
 
 #endif /* gameBoard_hpp */

@@ -8,6 +8,8 @@
 
 #include "ownable.hpp"
 
+using namespace std;
 
-Ownable:: Ownable(const string name, int status, const int cost, const int location, Player* player): name(name), status(status), cost(cost), location(location), player(player){}
+Ownable:: Ownable(const string name, const int location, int status, const int cost): Slot(name, location), status(status), cost(cost){}
+
 Ownable:: ~Ownable(){}

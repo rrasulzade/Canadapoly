@@ -13,18 +13,22 @@
 #include <string>
 #include <vector>
 
+// #include "ownable.hpp"
+
+class Ownable;
 
 class Player {
-    string name;
+    const std::string name;
     const char piece;
+    int id;
     int money;
     int position;
-    std:vector<Ownable* > buildings;
+    std::vector<Ownable* > buildings;
 
-    static int player_num;
+    static int playerID;
 
 public:
-    Player();
+    Player(const std::string name, const char piece);
     ~Player();
 
     bool hasMonopoly();

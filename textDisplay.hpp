@@ -15,10 +15,12 @@
 // #include "player.hpp"
 // #include "building.hpp"
 
+class Player;
+class Slot;
 
 class TextDisplay{
     char **theDisplay;
-    char **boardplayer;
+    char **boardPlayer;
 
 public:
     TextDisplay();
@@ -26,7 +28,7 @@ public:
     void print();
     void addPlayer(Player * );
     void notify(Player* );
-    void notify(Building*  b);
+    void notify(Slot*  b);
     void printAssets(Player*);
 
     friend std::ostream &operator<<(std::ostream &out, const TextDisplay &td);

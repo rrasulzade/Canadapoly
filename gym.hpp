@@ -9,7 +9,7 @@
 #ifndef gym_hpp
 #define gym_hpp
 
-#include <stdio.h>
+#include <iostream>
 #include "ownable.hpp"
 
 class Gym: public Ownable{
