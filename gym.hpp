@@ -10,12 +10,13 @@
 #define gym_hpp
 
 #include <iostream>
+#include <string>
 #include "ownable.hpp"
 
 class Gym: public Ownable{
 
 public:
-    Gym(const string name, int status, const int cost, const int location, Player* player);
+    Gym(const std::string name, const std::pair<int,int> location, int status, const int cost);
     ~Gym();
 
 };

@@ -17,3 +17,5 @@ using namespace std;
 int Player::playerID = 0;
 
 Player::Player(const string name, const char piece): name(name), piece(piece), id(playerID++), money(START_BALANCE), position(START_POSITION) {}
+
+Player::~Player(){}

@@ -8,7 +8,7 @@
 
 #include "residence.hpp"
 
+using namespace std;
 
-Residence:: Residence(const string name, int status, const int cost, const int location, Player* player): Ownable(const string name, int status, const int cost, const int location, Player* player){}
-
+Residence::Residence(const std::string name, const pair<int,int> location, int status, const int cost): Ownable(name, location, status, cost ){}
 Residence:: ~Residence(){}

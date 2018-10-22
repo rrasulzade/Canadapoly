@@ -20,13 +20,13 @@ class Slot;
 
 class TextDisplay{
     char **theDisplay;
-    char **boardPlayer;
+    // char **boardPlayer;
 
 public:
     TextDisplay();
     ~TextDisplay();
     void print();
-    void addPlayer(Player * );
+    void addPlayer(int playerID, char symbol, const std::pair<int,int> &location);
     void notify(Player* );
     void notify(Slot*  b);
     void printAssets(Player*);

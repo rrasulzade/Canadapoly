@@ -10,4 +10,10 @@
 
 using namespace std;
 
-Slot:: Slot(const string name, const int location): name(name), location(location){}
+Slot::Slot(const string name, const std::pair<int,int> location): name(name), location(location){}
+
+Slot::~Slot(){}
+
+pair<int,int> Slot::getLocation(){
+    return this->location;
+}

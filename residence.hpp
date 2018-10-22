@@ -10,13 +10,14 @@
 #define residence_hpp
 
 #include <iostream>
+#include <string>
 #include "ownable.hpp"
 
 
 class Residence: public Ownable {
 
 public:
-    Residence(const string name, int status, const int cost, const int location, Player* player);
+    Residence(const std::string name, const std::pair<int,int> location, int status, const int cost);
     ~Residence();
 };
 

@@ -1,0 +1,8 @@
+G Goose
+B GRT Bus
+D Tim Hortons Doughnut
+P Professor
+S Student
+$ Money
+L Laptop
+T Pink tie

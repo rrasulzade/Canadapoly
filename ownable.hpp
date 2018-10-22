@@ -25,9 +25,8 @@ class Ownable: public Slot {
     // add enum for status sold free mortgaged
 public:
     enum {FREE=0, OWNED=1, MORTGAGED=2};
-    Ownable(const std::string name, const int location, int status, const int cost);
+    Ownable(const std::string name, const std::pair<int,int> location, int status, const int cost);
     ~Ownable();
-
 
 };
 

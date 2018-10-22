@@ -16,13 +16,14 @@
 
 
 class Academic: public Ownable{
-    int monopoly_block;
+    std::string monopoly_block;
     int upgrade_cost;
     int upgrade_level;
-    int tuition_costs[6];
+    std::initializer_list<int> tuition_costs;
 public:
-    Academic(const std::string name, int status, const int cost, const int location, const int monopoly_block, const int upgrade_cost, int upgrade_level, const int tuitions[]);
+    Academic(const std::string name, const std::pair<int,int> location, int status, const int cost, const std::string monopoly_block, const int upgrade_cost, int upgrade_level, std::initializer_list<int> tuitions);
     ~Academic();
+
 
 };
 

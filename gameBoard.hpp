@@ -10,7 +10,7 @@
 #define gameBoard_hpp
 
 #include <iostream>
-
+#include <string>
 
 class Player;
 class Slot;
@@ -24,7 +24,9 @@ public:
     GameBoard();
     ~GameBoard();
 
-    void init();
+    void initializePlayers(const int playerNum);
+    void addPlayer(const int id, const std::string name, const char symbol);
+    std::pair<int,int> getLocationByID(const int slotID);
 
 };
 

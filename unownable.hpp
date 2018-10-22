@@ -11,4 +11,13 @@
 
 #include <stdio.h>
 
+
+class Unownable: public Slot{
+
+public:
+    Unownable();
+    ~Unownable();
+
+};
+
 #endif /* unownable_hpp */

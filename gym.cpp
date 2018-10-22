@@ -8,6 +8,8 @@
 
 #include "gym.hpp"
 
+using namespace std;
 
-Gym:: Gym(const string name, int status, const int cost, const int location, Player* player): Ownable(const string name, int status, const int cost, const int location, Player* player){}
+
+Gym:: Gym(const string name, const pair<int,int> location, int status, const int cost): Ownable(name, location, status, cost){}
 Gym:: ~Gym(){}

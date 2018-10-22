@@ -10,6 +10,6 @@
 
 using namespace std;
 
-Ownable:: Ownable(const string name, const int location, int status, const int cost): Slot(name, location), status(status), cost(cost){}
+Ownable:: Ownable(const string name, const pair<int,int> location, int status, const int cost): Slot(name, location), status(status), cost(cost){}
 
 Ownable:: ~Ownable(){}

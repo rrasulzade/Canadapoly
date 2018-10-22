@@ -1,5 +1,5 @@
 //
-//  slot.hpp
+//  slot.hpp  Abstract class
 //  BB7K
 //
 //  Created by Rasul on 2018-10-17.
@@ -13,12 +13,14 @@
 #include <string>
 
 class Slot {
+protected:
     const std::string name;
-    const int location;
+    const std::pair<int,int> location;
 
 public:
-    Slot(const std::string name, const int location);
-
+    Slot(const std::string name, const std::pair<int,int> location);
+    ~Slot();
+    std::pair<int,int> getLocation();
 };
 
 #endif /* slot_hpp */
