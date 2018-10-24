@@ -9,9 +9,11 @@
 #include <sstream>
 #include <fstream>
 
+
 #include "controller.hpp"
 #include "gameBoard.hpp"
 #include "textDisplay.hpp"
+#include "player.hpp"
 
 #define MAX_PLAYER          8
 #define MIN_PLAYER          2
@@ -28,7 +30,7 @@ Controller::Controller(GameBoard *board, TextDisplay *td): board(board), td(td){
     in.open("pieces.txt");
 
     for(int i = 0; i < MAX_PLAYER; i++){
-        char sym, delim;
+        char sym;
         string description;
         if(!(in >> sym)) { cout << "Invalid symbol. Please check pieces.txt file!"; }
 
@@ -44,6 +46,21 @@ Controller::~Controller(){
     delete td;
 }
 
+void Controller::printSymbols(){
+    for(auto& it : symbols){
+        cout << it.first << " for " << it.second << endl;
+    }
+}
+
+bool Controller::checkAndUpdateSymbols(const char &symbol){
+    for(auto& it : symbols){
+        if(it.first == symbol){
+            symbols.erase(it.first);
+            return true;
+        }
+    }
+    return false;
+}
 
 void Controller::initialize(){
     int playerCounter;
@@ -78,10 +95,9 @@ void Controller::initialize(){
             continue;
         }
 
-        board->addPlayer(i, name, symbol[0]);
-
-        const pair <int, int> startLocation = board->getLocationByID(START_POSITION);
-        td->addPlayer(i, symbol[0], startLocation);
+        Player* player = board->addPlayer(i, name, symbol[0], START_POSITION);
+        const pair<int, int> location = board->getLocationBySlotID(player->getPosition());
+        td->updatePlayer(player, location);
 
         i++;
     }
@@ -90,18 +106,21 @@ void Controller::initialize(){
     cout << *td << endl;
 }
 
-void Controller::printSymbols(){
-    for(auto& it : symbols){
-        cout << it.first << " for " << it.second << endl;
-    }
-}
+void Controller::play(){
 
-bool Controller::checkAndUpdateSymbols(const char &symbol){
-    for(auto& it : symbols){
-        if(it.first == symbol){
-            symbols.erase(it.first);
-            return true;
-        }
+
+    while(1){
+        string in;
+        cout << "Enter 'next' to continue: " << endl;
+        getline(cin, in);
+        // if(in != "next" || in != "n")
+        //     break;
+
+        //update board
+        Player* player = board->updatePlayer();
+        const pair<int, int> location = board->getLocationBySlotID(player->getPosition());
+        td->updatePlayer(player, location);
+        cout << *td << endl;
+
     }
-    return false;
 }

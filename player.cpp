@@ -9,13 +9,32 @@
 #include "player.hpp"
 
 #define START_BALANCE 1500
-#define START_POSITION 0
 
 
 using namespace std;
 
 int Player::playerID = 0;
 
-Player::Player(const string name, const char piece): name(name), piece(piece), id(playerID++), money(START_BALANCE), position(START_POSITION) {}
+Player::Player(const string name, const char piece, int position): name(name), piece(piece), id(playerID++), money(START_BALANCE), position(position) {}
 
 Player::~Player(){}
+
+int Player::getPosition() const{
+    return this->position;
+}
+
+int Player::getID() const{
+    return this->id;
+}
+
+char Player::getPiece() const{
+    return this->piece;
+}
+
+int Player::getMoney(){
+    return this->money;
+}
+
+void Player::setPosition(const int position){
+    this->position = position;
+}

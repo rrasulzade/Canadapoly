@@ -22,15 +22,13 @@ int main(int argc, const char * argv[]) {
     GameBoard *board = new GameBoard;
     TextDisplay *td = new TextDisplay;
 
-    
     Controller *controller = new Controller(board, td);
 
-    // TODO: print instructions to set up the game. Take input arguments and create players then start the game
+    // initialize slots and players, and print the board
     controller->initialize();
-    //controller->play();
 
-
-    //cout << *td << endl;
+    // start the game
+    controller->play();
 
     return 0;
 }

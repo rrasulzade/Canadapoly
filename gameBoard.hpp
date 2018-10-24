@@ -14,19 +14,24 @@
 
 class Player;
 class Slot;
+class Dice;
 
 class GameBoard{
     int totalPlayers;
     Player **players;
     Slot *slots[40];
+    Dice *dice;
+
+    static int curPlayerID;
 
 public:
     GameBoard();
     ~GameBoard();
 
     void initializePlayers(const int playerNum);
-    void addPlayer(const int id, const std::string name, const char symbol);
-    std::pair<int,int> getLocationByID(const int slotID);
+    Player* addPlayer(const int id, const std::string name, const char symbol, const int slotID);
+    std::pair<int,int> getLocationBySlotID(const int slotID);
+    Player* updatePlayer();
 
 };
 

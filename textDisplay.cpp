@@ -7,6 +7,8 @@
 //
 
 #include "textDisplay.hpp"
+#include "player.hpp"
+
 #include <string>
 #include <iostream>
 #include <fstream>
@@ -16,9 +18,9 @@
 #define MAX_ROW             67
 #define MAX_COLUMN          111
 #define MAX_PLAYER          8
-#define IMPROVEMENT_OFFSET  0
-#define OWNER_OFFSET        1
-#define VISITOR_OFFSET      4
+#define IMPROVEMENT_OFFSET  0               // 1st line of a slot to display improvements
+#define OWNER_OFFSET        1               // 2nd line of a slot to display owner symbol
+#define VISITOR_OFFSET      4               // 5th line of a slot to display player symbol
 
 
 using namespace std;
@@ -67,9 +69,28 @@ ostream &operator<<(ostream &out, const TextDisplay &td){
     return out;
 }
 
-void TextDisplay::addPlayer(int playerID, char symbol, const pair <int, int> &location){
-    int col = location.second + playerID;
-    int row = location.first + VISITOR_OFFSET;
+void TextDisplay::updatePlayer(const Player* player, const pair<int, int> location){
+    const int playerID = player->getID();
+    const char symbol = player->getPiece();
 
+    const int col = location.second + playerID;
+    const int row = location.first + VISITOR_OFFSET;
+
+    // cout << playerID << " " << col << " " << row << endl;
+    // cout << playerCurPosition.size() << endl;
+
+    if(playerCurPosition.size() <= playerID) {
+        playerCurPosition.push_back(location);
+    } else {
+        const pair<int, int> currentLocation = playerCurPosition[playerID];
+        int curCol = currentLocation.second + playerID;
+        int curRow = currentLocation.first + VISITOR_OFFSET;
+
+        // cout << playerID << " " << curCol << " " << curRow << endl;
+        theDisplay[curRow][curCol] = ' ';
+    }
+
+    // update current position and display
+    playerCurPosition[playerID] = location;
     theDisplay[row][col] = symbol;
 }

@@ -7,6 +7,7 @@
 //
 
 #include "gameBoard.hpp"
+#include "dice.hpp"
 #include "player.hpp"
 #include "slot.hpp"
 #include "academic.hpp"
@@ -16,13 +17,15 @@
 #include "needleshall.hpp"
 
 
-
-
 #define SLOTS_NUM  40
+
+int GameBoard::curPlayerID = 0;
+
 
 using namespace std;
 
 GameBoard::GameBoard(): players(nullptr) {
+    dice = new Dice();
     slots[0] = new Slot("Collect OSAP", make_pair(61, 101));
     slots[1] = new Academic("AL", make_pair(61, 91), Academic::FREE, 40, "Arts1", 50, 0, {2,10,30,90,160,250});
     slots[2] = new SLC("SLC1", make_pair(61, 81));
@@ -85,11 +88,29 @@ void GameBoard::initializePlayers(const int playerNum){
     }
 }
 
-void GameBoard::addPlayer(const int id, const std::string name, const char symbol){
-    this->players[id] = new Player(name, symbol);
+Player* GameBoard::addPlayer(const int id, const std::string name, const char symbol, const int slotID){
+    this->players[id] = new Player(name, symbol, slotID);
+    return this->players[id];
 }
 
 
-pair<int,int> GameBoard::getLocationByID(const int slotID){
+pair<int,int> GameBoard::getLocationBySlotID(const int slotID){
     return slots[slotID]->getLocation();
+}
+
+
+Player* GameBoard::updatePlayer(){
+    //roll dice and print results
+    dice->roll();
+    const int diceSum = dice->getSum();
+    cout << dice->getResults() << endl;
+
+    // move player and update locationID
+    Player* curPlayer = this->players[curPlayerID];
+    const int nextPosition = (curPlayer->getPosition() + diceSum) % 40;
+    curPlayer->setPosition(nextPosition);
+    //cout << "New position: " << nextPosition << endl;
+    curPlayerID = curPlayerID == totalPlayers-1 ? 0 : curPlayerID+1;
+    // cout << curPlayerID << endl;
+    return curPlayer;
 }

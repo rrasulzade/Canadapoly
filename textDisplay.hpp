@@ -12,6 +12,8 @@
 
 #include <iostream>
 #include <sstream>
+#include <vector>
+
 // #include "player.hpp"
 // #include "building.hpp"
 
@@ -20,13 +22,13 @@ class Slot;
 
 class TextDisplay{
     char **theDisplay;
-    // char **boardPlayer;
+    std::vector<std::pair<int,int>> playerCurPosition;
 
 public:
     TextDisplay();
     ~TextDisplay();
     void print();
-    void addPlayer(int playerID, char symbol, const std::pair<int,int> &location);
+    void updatePlayer(const Player* player, const std::pair<int, int> location);
     void notify(Player* );
     void notify(Slot*  b);
     void printAssets(Player*);
