@@ -8,6 +8,9 @@
 
 #include "slot.hpp"
 
+#define NO_STATUS       -1
+
+
 using namespace std;
 
 Slot::Slot(const string name, const std::pair<int,int> location): name(name), location(location){}
@@ -16,4 +19,8 @@ Slot::~Slot(){}
 
 pair<int,int> Slot::getLocation(){
     return this->location;
+}
+
+int Slot::getStatus() const{
+    return NO_STATUS;
 }

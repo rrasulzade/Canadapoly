@@ -10,6 +10,23 @@
 
 using namespace std;
 
-Ownable:: Ownable(const string name, const pair<int,int> location, int status, const int cost): Slot(name, location), status(status), cost(cost){}
+Ownable::Ownable(const string name, const pair<int,int> location, int status, const int cost): Slot(name, location), status(status), cost(cost){}
 
-Ownable:: ~Ownable(){}
+Ownable::~Ownable(){}
+
+int Ownable::getStatus() const{
+    return this->status;
+}
+
+int Ownable::getCost() const{
+    return this->cost;
+}
+
+Player* Ownable::getOwner() const{
+    return this->owner;
+}
+
+void Ownable::setOwner(Player* owner){
+    this->owner = owner;
+    this->status = Ownable::OWNED;
+}

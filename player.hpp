@@ -23,7 +23,7 @@ class Player {
     const int id;
     int money;
     int position;
-    std::vector<Ownable* > buildings;
+    std::vector<Ownable* > properties;
 
     static int playerID;
 
@@ -42,11 +42,16 @@ public:
 
     // ACCESSORS
     int getPosition() const;
+    std::string getName() const;
     int getID() const;
     char getPiece() const;
-    int getMoney();
+    int getBalance() const;
+    int getPropertyCount() const;
 
     void setPosition(const int position);
+    void updateBalance(const int amount);
+    void attachProperty(Ownable* property);
+    void detachProperty(Ownable* property);
 };
 
 #endif /* player_hpp */

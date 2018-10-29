@@ -19,7 +19,7 @@
 
 #define SLOTS_NUM  40
 
-int GameBoard::curPlayerID = 0;
+
 
 
 using namespace std;
@@ -98,19 +98,59 @@ pair<int,int> GameBoard::getLocationBySlotID(const int slotID){
     return slots[slotID]->getLocation();
 }
 
+Slot* GameBoard::getPropertyByID(const int& slotID){
+    return slots[slotID];
+}
 
-Player* GameBoard::updatePlayer(){
-    //roll dice and print results
+int GameBoard::rollDice(){
     dice->roll();
-    const int diceSum = dice->getSum();
-    cout << dice->getResults() << endl;
+    return dice->getSum();
+}
 
+string GameBoard::diceResults(){
+    return dice->getResults();
+}
+
+bool GameBoard::isPair(){
+    return dice->isPair();
+}
+
+
+bool GameBoard::isSlotFree(const int& slotID){
+    return slots[slotID]->getStatus() == Ownable::FREE;
+}
+
+bool GameBoard::isSlotOwned(const int& slotID){
+    return slots[slotID]->getStatus() == Ownable::OWNED;
+}
+
+bool GameBoard::isSlotMortgaged(const int& slotID){
+    return slots[slotID]->getStatus() == Ownable::MORTGAGED;
+}
+
+Player* GameBoard::getPlayerByID(const int& playerID){
+    return players[playerID];
+}
+
+void GameBoard::updatePlayer(int& curPlayerID, const int& diceSum){
     // move player and update locationID
     Player* curPlayer = this->players[curPlayerID];
-    const int nextPosition = (curPlayer->getPosition() + diceSum) % 40;
+    const int nextPosition = (curPlayer->getPosition() + diceSum) % SLOTS_NUM;
     curPlayer->setPosition(nextPosition);
-    //cout << "New position: " << nextPosition << endl;
-    curPlayerID = curPlayerID == totalPlayers-1 ? 0 : curPlayerID+1;
-    // cout << curPlayerID << endl;
-    return curPlayer;
+}
+
+bool GameBoard::tryBuy(const int& playerID, const int& slotID){
+    Player* curPlayer = players[playerID];
+    Ownable* property = dynamic_cast<Ownable*> (slots[slotID]);
+    int cost = property->getCost();
+    // not enough money to buy
+    if(curPlayer->getBalance() < cost){
+        return false;
+    }
+
+    property->setOwner(curPlayer);
+    curPlayer->attachProperty(property);
+    curPlayer->updateBalance(-1*cost);
+
+    return true;
 }

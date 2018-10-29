@@ -94,3 +94,33 @@ void TextDisplay::updatePlayer(const Player* player, const pair<int, int> locati
     playerCurPosition[playerID] = location;
     theDisplay[row][col] = symbol;
 }
+
+
+void TextDisplay::updateOwner(const Player* player){
+    const char symbol = player->getPiece();
+    const int playerID = player->getID();
+    string owner = "owner: ";
+    owner += symbol;
+
+    const pair<int, int> currentLocation = playerCurPosition[playerID];
+    const int col = currentLocation.second;
+    const int row = currentLocation.first + OWNER_OFFSET;
+
+    for(unsigned int i = 0; i < owner.size(); i++){
+        theDisplay[row][col+i] = owner[i];
+    }
+}
+
+void TextDisplay::printAssets(const Player* p){
+    const char symbol = p->getPiece();
+    const int playerID = p->getID();
+    const string name = p->getName();
+    const int balance = p->getBalance();
+    const int propertyCount = p->getPropertyCount();
+
+    cout << "Player " << playerID << " assets:" << endl;
+    cout << "Name: " << name << endl;
+    cout << "Symbol: " << symbol << endl;
+    cout << "Remaining balance: " << balance << endl;
+    cout << "Number of properties: " << propertyCount << endl;
+}

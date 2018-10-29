@@ -19,7 +19,8 @@ protected:
 
 public:
     Slot(const std::string name, const std::pair<int,int> location);
-    ~Slot();
+    virtual ~Slot();
+    virtual int getStatus() const;
     std::pair<int,int> getLocation();
 };
 

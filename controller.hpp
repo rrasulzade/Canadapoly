@@ -21,7 +21,8 @@ class Controller {
     GameBoard *board;
     TextDisplay *td;
     std::map <char, std::string> symbols;
-
+    int curPlayerID;
+    int totalPlayers;
 
     void printSymbols();
     bool checkAndUpdateSymbols(const char &symbol);
@@ -32,6 +33,12 @@ public:
 
     void initialize();
     void play();
+    // mortgage
+    // trade
+    // improve/ demote / promote
+    // auction
+    // go to tims / get out Tims
+    
 
 };
 

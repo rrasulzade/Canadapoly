@@ -30,8 +30,19 @@ public:
 
     void initializePlayers(const int playerNum);
     Player* addPlayer(const int id, const std::string name, const char symbol, const int slotID);
+
     std::pair<int,int> getLocationBySlotID(const int slotID);
-    Player* updatePlayer();
+    Player* getPlayerByID(const int& playerID);
+    Slot* getPropertyByID(const int& slotID);
+
+    void updatePlayer(int& curPlayerID, const int& diceSum);
+    int rollDice();
+    std::string diceResults();
+    bool isPair();
+    bool isSlotFree(const int& slotID);
+    bool isSlotOwned(const int& slotID);
+    bool isSlotMortgaged(const int& slotID);
+    bool tryBuy(const int& playerID, const int& slotID);
 
 };
 

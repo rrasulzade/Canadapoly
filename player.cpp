@@ -8,7 +8,7 @@
 
 #include "player.hpp"
 
-#define START_BALANCE 1500
+#define START_BALANCE           500
 
 
 using namespace std;
@@ -19,22 +19,47 @@ Player::Player(const string name, const char piece, int position): name(name), p
 
 Player::~Player(){}
 
-int Player::getPosition() const{
-    return this->position;
-}
-
 int Player::getID() const{
     return this->id;
+}
+
+string Player::getName() const{
+    return this->name;
 }
 
 char Player::getPiece() const{
     return this->piece;
 }
 
-int Player::getMoney(){
+int Player::getPosition() const{
+    return this->position;
+}
+
+int Player::getBalance() const{
     return this->money;
+}
+
+int Player::getPropertyCount() const{
+    return this->properties.size();
+}
+
+void Player::updateBalance(const int amount){
+    this->money += amount;
 }
 
 void Player::setPosition(const int position){
     this->position = position;
+}
+
+void Player::attachProperty(Ownable* property){
+    this->properties.push_back(property);
+}
+
+void Player::detachProperty(Ownable* property){
+    int index = 0;
+    for(auto it : properties){
+        if(it == property) break;
+        index++;
+    }
+    this->properties.erase(properties.begin() + index -1);
 }

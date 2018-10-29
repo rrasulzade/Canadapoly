@@ -28,6 +28,12 @@ public:
     Ownable(const std::string name, const std::pair<int,int> location, int status, const int cost);
     ~Ownable();
 
+    int getStatus() const;
+    int getCost() const;
+    Player* getOwner() const;
+
+    void setOwner(Player* owner);
+
 };
 
 #endif /* ownable_hpp */

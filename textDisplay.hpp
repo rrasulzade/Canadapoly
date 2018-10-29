@@ -29,9 +29,8 @@ public:
     ~TextDisplay();
     void print();
     void updatePlayer(const Player* player, const std::pair<int, int> location);
-    void notify(Player* );
-    void notify(Slot*  b);
-    void printAssets(Player*);
+    void printAssets(const Player*);
+    void updateOwner(const Player*);
 
     friend std::ostream &operator<<(std::ostream &out, const TextDisplay &td);
 };
