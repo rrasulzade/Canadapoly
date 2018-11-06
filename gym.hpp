@@ -16,9 +16,11 @@
 class Gym: public Ownable{
 
 public:
-    Gym(const std::string name, const std::pair<int,int> location, int status, const int cost);
+    Gym(const std::string name, const std::pair<int,int> location, int status, const int cost, const int totalMonoBlocks);
     ~Gym();
 
+    std::string getMonopolyBlock() const;
+    int getRentalCost(const Player* p) const;
 };
 
 

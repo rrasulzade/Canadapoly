@@ -31,14 +31,8 @@ public:
     Player(const std::string name, const char piece, int position);
     ~Player();
 
-    bool hasMonopoly();
-    void buy();
-    void auction();
-    void mortgage();
-    void unmortgage();
-    void trade();
-    void bankrupt();
-    void improve();
+    bool hasMonopoly(const Ownable* property) const;
+    int countOwnedBlocks(const Ownable* property) const;
 
     // ACCESSORS
     int getPosition() const;

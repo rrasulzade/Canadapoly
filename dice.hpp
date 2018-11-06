@@ -23,6 +23,8 @@ public:
     int getSum();
     void roll();
     std::string getResults();
+
+    void setDice(int d1, int d2);
 };
 
 #endif /* dice_hpp */

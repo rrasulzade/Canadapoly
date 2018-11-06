@@ -33,7 +33,10 @@ public:
 
     std::pair<int,int> getLocationBySlotID(const int slotID);
     Player* getPlayerByID(const int& playerID);
-    Slot* getPropertyByID(const int& slotID);
+    Player* getPlayerByName(const std::string& name);
+    Slot* getSlotByID(const int& slotID);
+    Slot* getSlotByName(const std::string& slotName);
+
 
     void updatePlayer(int& curPlayerID, const int& diceSum);
     int rollDice();
@@ -44,6 +47,7 @@ public:
     bool isSlotMortgaged(const int& slotID);
     bool tryBuy(const int& playerID, const int& slotID);
 
+    void setDice(int d1, int d2);
 };
 
 #endif /* gameBoard_hpp */

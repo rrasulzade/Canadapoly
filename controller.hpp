@@ -16,6 +16,8 @@
 
 class GameBoard;
 class TextDisplay;
+class Player;
+class Ownable;
 
 class Controller {
     GameBoard *board;
@@ -26,6 +28,8 @@ class Controller {
 
     void printSymbols();
     bool checkAndUpdateSymbols(const char &symbol);
+    void finishTrade(Player* p1, Player* p2, Ownable *give, Ownable *receive);
+    void finishTrade(Player* p1, Player* p2, int money, Ownable *property);
 
 public:
     Controller(GameBoard *board, TextDisplay *td);
@@ -33,12 +37,14 @@ public:
 
     void initialize();
     void play();
-    // mortgage
-    // trade
-    // improve/ demote / promote
+    bool mortgage(Player* p, const std::string& propertyName);
+    bool unmortgage(Player* p, const std::string& propertyName);
+    bool trade(Player* p, const std::string& in);
+    bool improve(Player* p, const std::string& in);
+    bool payDebt(Ownable* property, Player* p);
     // auction
     // go to tims / get out Tims
-    
+
 
 };
 

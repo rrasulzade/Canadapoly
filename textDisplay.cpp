@@ -15,13 +15,13 @@
 #include <vector>
 
 
-#define MAX_ROW             67
-#define MAX_COLUMN          111
-#define MAX_PLAYER          8
-#define IMPROVEMENT_OFFSET  0               // 1st line of a slot to display improvements
-#define OWNER_OFFSET        1               // 2nd line of a slot to display owner symbol
-#define VISITOR_OFFSET      4               // 5th line of a slot to display player symbol
-
+#define MAX_ROW                 67
+#define MAX_COLUMN              111
+#define MAX_PLAYER              8
+#define IMPROVEMENT_OFFSET      0               // 1st line of a slot to display improvements
+#define OWNER_ROW_OFFSET        1               // 2nd line of a slot to display owner symbol
+#define VISITOR_OFFSET          4               // 5th line of a slot to display player symbol
+#define OWNER_NAME_OFFSET       7
 
 using namespace std;
 
@@ -96,7 +96,7 @@ void TextDisplay::updatePlayer(const Player* player, const pair<int, int> locati
 }
 
 
-void TextDisplay::updateOwner(const Player* player){
+void TextDisplay::addOwner(const Player* player){
     const char symbol = player->getPiece();
     const int playerID = player->getID();
     string owner = "owner: ";
@@ -104,11 +104,52 @@ void TextDisplay::updateOwner(const Player* player){
 
     const pair<int, int> currentLocation = playerCurPosition[playerID];
     const int col = currentLocation.second;
-    const int row = currentLocation.first + OWNER_OFFSET;
+    const int row = currentLocation.first + OWNER_ROW_OFFSET;
 
     for(unsigned int i = 0; i < owner.size(); i++){
         theDisplay[row][col+i] = owner[i];
     }
+}
+
+void TextDisplay::updateOwner(const pair<int, int> &loc1, const pair<int, int> &loc2){
+    const int col1 = loc1.second + OWNER_NAME_OFFSET;
+    const int row1 = loc1.first + OWNER_ROW_OFFSET;
+
+    const int col2 = loc2.second + OWNER_NAME_OFFSET;
+    const int row2 = loc2.first + OWNER_ROW_OFFSET;
+
+    char symbol = theDisplay[row1][col1];
+    theDisplay[row1][col1] = theDisplay[row2][col2];
+    theDisplay[row2][col2] = symbol;
+}
+
+void TextDisplay::updateOwner(const char& ownerSymbol, const pair<int, int> &loc){
+    const int col = loc.second + OWNER_NAME_OFFSET;
+    const int row = loc.first + OWNER_ROW_OFFSET;
+
+    theDisplay[row][col] = ownerSymbol;
+}
+
+
+void TextDisplay::updateMortgage(const pair<int, int> location){
+    const int col = location.second;
+    const int row = location.first + IMPROVEMENT_OFFSET;
+    string word = "MORTGAGED";
+    for(unsigned int i = 0; i < word.size(); i++)
+        if(theDisplay[row][col + i] == word[i]){
+            theDisplay[row][col + i] = ' ';
+        }else{
+            theDisplay[row][col + i] = word[i];
+        }
+}
+
+void TextDisplay::updateImprovement(const std::pair<int, int>& location, const int& levelOffset) const {
+    const int col = location.second + levelOffset;
+    const int row = location.first + IMPROVEMENT_OFFSET;
+    if(theDisplay[row][col] == 'I')
+        theDisplay[row][col] = ' ';
+    else
+        theDisplay[row][col] = 'I';
 }
 
 void TextDisplay::printAssets(const Player* p){
@@ -118,7 +159,7 @@ void TextDisplay::printAssets(const Player* p){
     const int balance = p->getBalance();
     const int propertyCount = p->getPropertyCount();
 
-    cout << "Player " << playerID << " assets:" << endl;
+    cout << "Player " << playerID+1 << " assets:" << endl;
     cout << "Name: " << name << endl;
     cout << "Symbol: " << symbol << endl;
     cout << "Remaining balance: " << balance << endl;

@@ -7,8 +7,9 @@
 //
 
 #include "player.hpp"
+#include "ownable.hpp"
 
-#define START_BALANCE           500
+#define START_BALANCE           50000
 
 
 using namespace std;
@@ -61,5 +62,33 @@ void Player::detachProperty(Ownable* property){
         if(it == property) break;
         index++;
     }
-    this->properties.erase(properties.begin() + index -1);
+    this->properties.erase(properties.begin() + index-1);
+}
+
+bool Player::hasMonopoly(const Ownable* property) const{
+    int totalBlocks = countOwnedBlocks(property);
+    // const string monopolyBlock = property->getMonopolyBlock();
+    // int totalBlocks = property->getTotalBlocks();
+    //
+    // for(int i = 0; i < properties.size() && totalBlocks > 0; i++){
+    //     if(properties[i]->getMonopolyBlock() == monopolyBlock){
+    //         totalBlocks--;
+    //     }
+    // }
+
+    if(totalBlocks == property->getTotalBlocks())
+        return true;
+
+    return false;
+}
+
+int Player::countOwnedBlocks(const Ownable* property) const{
+    const string monopolyBlock = property->getMonopolyBlock();
+    int totalBlocks = 0;
+    for(int i = 0; i < properties.size(); i++){
+        if(properties[i]->getMonopolyBlock() == monopolyBlock){
+            totalBlocks++;
+        }
+    }
+    return totalBlocks;
 }

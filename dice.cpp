@@ -35,3 +35,8 @@ string Dice::getResults(){
 
     return ss.str();
 }
+
+void Dice::setDice(int d1, int d2){
+    die1 = d1;
+    die2 = d2;
+}

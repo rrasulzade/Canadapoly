@@ -21,7 +21,8 @@ public:
     Slot(const std::string name, const std::pair<int,int> location);
     virtual ~Slot();
     virtual int getStatus() const;
-    std::pair<int,int> getLocation();
+    std::pair<int,int> getLocation() const;
+    std::string getName() const;
 };
 
 #endif /* slot_hpp */

@@ -7,20 +7,47 @@
 //
 
 #include "academic.hpp"
+#include "player.hpp"
 
 #define MAX_IMPROVEMENTS    6
 
 using namespace std;
 
 
-Academic:: Academic(const string name, const pair<int,int> location, int status, const int cost, const string monopoly_block, const int upgrade_cost, int upgrade_level, initializer_list<int> tuitions) : Ownable(name, location, status, cost),
-                                        monopoly_block(monopoly_block),
-                                        upgrade_cost(upgrade_cost),
-                                        upgrade_level(upgrade_level),
-                                        tuition_costs(tuitions)
-{
+Academic::Academic(const string name, const pair<int,int> location, int status, const int cost, const int totalMonoBlocks, const string monopolyBlock, const int upgradeCost, int upgradeLevel, initializer_list<int> tuitions) : Ownable(name, location, status, cost, totalMonoBlocks),
+                                        monopolyBlock(monopolyBlock),
+                                        upgradeCost(upgradeCost),
+                                        upgradeLevel(upgradeLevel)
 
+{
+    for(auto it: tuitions){
+        tuitionCosts.push_back(it);
+    }
 }
 
 
-Academic:: ~Academic(){}
+Academic::~Academic(){}
+
+string Academic::getMonopolyBlock() const{
+    return this->monopolyBlock;
+}
+
+int Academic::getUpgradeCost() const{
+    return this->upgradeCost;
+}
+
+int Academic::getUpgradeLevel() const{
+    return this->upgradeLevel;
+}
+
+void Academic::setUpgradeLevel(int level){
+    if(level >= 0 && level < MAX_IMPROVEMENTS)
+     this->upgradeLevel = level;
+}
+
+int Academic::getRentalCost(const Player* p) const{
+    if(this->getOwner()->hasMonopoly(this) && upgradeLevel == 0){
+        return 2*tuitionCosts[upgradeLevel];
+    }
+    return tuitionCosts[upgradeLevel];
+}

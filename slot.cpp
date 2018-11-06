@@ -17,10 +17,14 @@ Slot::Slot(const string name, const std::pair<int,int> location): name(name), lo
 
 Slot::~Slot(){}
 
-pair<int,int> Slot::getLocation(){
+pair<int,int> Slot::getLocation() const{
     return this->location;
 }
 
 int Slot::getStatus() const{
     return NO_STATUS;
+}
+
+string Slot::getName() const{
+    return name;
 }
