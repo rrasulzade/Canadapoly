@@ -21,7 +21,9 @@ class Player {
     const std::string name;
     const char piece;
     const int id;
-    int money;
+    int doublesCounter;
+    bool inJail;
+    unsigned int money;
     int position;
     std::vector<Ownable* > properties;
 
@@ -41,8 +43,14 @@ public:
     char getPiece() const;
     int getBalance() const;
     int getPropertyCount() const;
+    int getDoublesCounter() const;
+    bool isInJail() const;
 
+    void increaseDoublesCounter(int val=1);
+    void decreaseDoublesCounter(int val=1);
+    void setDoublesCounter(int val);
     void setPosition(const int position);
+    void setJail(bool value);
     void updateBalance(const int amount);
     void attachProperty(Ownable* property);
     void detachProperty(Ownable* property);

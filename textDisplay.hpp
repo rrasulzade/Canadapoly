@@ -28,7 +28,7 @@ public:
     TextDisplay();
     ~TextDisplay();
     void print();
-    void updatePlayer(const Player* player, const std::pair<int, int> location);
+    void movePlayer(const Player* player, const std::pair<int, int> location);
     void printAssets(const Player*);
     void addOwner(const Player*);
     void updateOwner(const std::pair<int, int> &loc1, const std::pair<int, int> &loc2);

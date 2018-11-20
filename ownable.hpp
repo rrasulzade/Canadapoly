@@ -21,6 +21,7 @@ class Ownable: public Slot {
     int status;
     const int cost;
     const int totalMonoBlocks;
+    int asset;
     Player *owner;
 
     // add enum for status sold free mortgaged
@@ -36,9 +37,11 @@ public:
     // virtual int getUpgradeCost() const;
     // virtual int getUpgradeLevel() const;
     virtual std::string getMonopolyBlock() const;
+    int getAsset() const;
     Player* getOwner() const;
 
     void setOwner(Player* owner);
+    void setAsset(const int& value);
 
     void mortgage();
     void unmortgage();

@@ -30,6 +30,7 @@ class Controller {
     bool checkAndUpdateSymbols(const char &symbol);
     void finishTrade(Player* p1, Player* p2, Ownable *give, Ownable *receive);
     void finishTrade(Player* p1, Player* p2, int money, Ownable *property);
+    void endTurn(Player** p);
 
 public:
     Controller(GameBoard *board, TextDisplay *td);
@@ -42,6 +43,9 @@ public:
     bool trade(Player* p, const std::string& in);
     bool improve(Player* p, const std::string& in);
     bool payDebt(Ownable* property, Player* p);
+
+    bool handleLowBalance(Player* player, int moneyNeeded, bool forced=false);
+    bool payJailFee(Player* p);
     // auction
     // go to tims / get out Tims
 

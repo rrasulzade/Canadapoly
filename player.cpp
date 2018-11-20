@@ -9,16 +9,23 @@
 #include "player.hpp"
 #include "ownable.hpp"
 
-#define START_BALANCE           50000
+#define START_BALANCE           500
 
 
 using namespace std;
 
 int Player::playerID = 0;
 
-Player::Player(const string name, const char piece, int position): name(name), piece(piece), id(playerID++), money(START_BALANCE), position(position) {}
+Player::Player(const string name, const char piece, int position): name(name), piece(piece), id(playerID++), money(START_BALANCE), position(position) {
+    doublesCounter = 0;
+    inJail = false;
+}
 
 Player::~Player(){}
+
+bool Player::isInJail() const{
+    return this->inJail;
+}
 
 int Player::getID() const{
     return this->id;
@@ -48,8 +55,29 @@ void Player::updateBalance(const int amount){
     this->money += amount;
 }
 
+int Player::getDoublesCounter() const{
+    return this->doublesCounter;
+}
+
+void Player::increaseDoublesCounter(int val){
+    this->doublesCounter += val;
+}
+
+void Player::decreaseDoublesCounter(int val){
+    this->doublesCounter -= val;
+}
+
+void Player::setDoublesCounter(int val){
+    this->doublesCounter = val;
+}
+
+
 void Player::setPosition(const int position){
     this->position = position;
+}
+
+void Player::setJail(bool value){
+    this->inJail = value;
 }
 
 void Player::attachProperty(Ownable* property){

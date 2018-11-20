@@ -16,10 +16,10 @@
 #include "slc.hpp"
 #include "needleshall.hpp"
 
-
-#define SLOTS_NUM  40
-
-
+#define SLOTS_NUM                  40
+#define OSAP_FEE                  200
+extern const int TUITION_FEE  =   300;
+extern const int COOP_FEE     =   150;
 
 
 using namespace std;
@@ -154,7 +154,7 @@ Player* GameBoard::getPlayerByName(const string& name){
     return  nullptr;
 }
 
-void GameBoard::updatePlayer(int& curPlayerID, const int& diceSum){
+void GameBoard::movePlayer(int& curPlayerID, const int& diceSum){
     // move player and update locationID
     Player* curPlayer = this->players[curPlayerID];
     const int nextPosition = (curPlayer->getPosition() + diceSum) % SLOTS_NUM;
@@ -175,4 +175,32 @@ bool GameBoard::tryBuy(const int& playerID, const int& slotID){
     curPlayer->updateBalance(-1*cost);
 
     return true;
+}
+
+bool GameBoard::tryPayCoopFee(int playerID){
+    Player* p = players[playerID];
+    cout << "You landed on Coop Fee slot and must pay $" << COOP_FEE  << " fee."<< endl;
+    if(p->getBalance() < COOP_FEE){
+        return false;
+    }
+    p->updateBalance(-1*COOP_FEE);
+    cout << "You paid the fee and can continue game. " << endl;
+    return true;
+}
+
+
+bool GameBoard::tryPayTuitionFee(int playerID){
+    Player* p = players[playerID];
+    cout << "You landed on Tuition slot and must pay $" << TUITION_FEE << " fee."<< endl;
+    if(p->getBalance() < TUITION_FEE){
+        return false;
+    }
+    p->updateBalance(-1*TUITION_FEE);
+    cout << "You paid the fee and can continue game. " << endl;
+    return true;
+}
+
+void GameBoard::collectOSAP(int playerID){
+    Player* p = players[playerID];
+    p->updateBalance(OSAP_FEE);
 }

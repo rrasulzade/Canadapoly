@@ -69,7 +69,7 @@ ostream &operator<<(ostream &out, const TextDisplay &td){
     return out;
 }
 
-void TextDisplay::updatePlayer(const Player* player, const pair<int, int> location){
+void TextDisplay::movePlayer(const Player* player, const pair<int, int> location){
     const int playerID = player->getID();
     const char symbol = player->getPiece();
 

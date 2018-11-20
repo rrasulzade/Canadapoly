@@ -13,6 +13,7 @@ using namespace std;
 
 Ownable::Ownable(const string name, const pair<int,int> location, int status, const int cost, const int totalMonoBlocks): Slot(name, location), status(status), cost(cost), totalMonoBlocks(totalMonoBlocks){
     this->owner = nullptr;
+    this->asset = cost;
 }
 
 Ownable::~Ownable(){}
@@ -41,6 +42,10 @@ int Ownable::getTotalBlocks() const{
 //     return -1;
 // }
 
+int Ownable::getAsset() const{
+    return this->asset;
+}
+
 string Ownable::getMonopolyBlock() const{
     return "Ownable";
 }
@@ -52,6 +57,10 @@ Player* Ownable::getOwner() const{
 void Ownable::setOwner(Player* owner){
     this->owner = owner;
     this->status = Ownable::OWNED;
+}
+
+void Ownable::setAsset(const int& value){
+    this->asset += value;
 }
 
 void Ownable::mortgage(){
