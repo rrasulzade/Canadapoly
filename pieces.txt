@@ -1,8 +1,8 @@
 G Goose
-B GRT Bus
+B TTC Bus
 D Tim Hortons Doughnut
-P Professor
+P Prime Minister
 S Student
 $ Money
 L Laptop
-T Pink tie
+T Tax Inspetor

@@ -1,11 +1,3 @@
-//
-//  controller.hpp
-//  BB7K
-//
-//  Created by Rasul on 2018-10-08.
-//  Copyright © 2018 ***Rasul Rasulzade***. All rights reserved.
-//
-
 #ifndef controller_hpp
 #define controller_hpp
 
@@ -17,7 +9,7 @@
 class GameBoard;
 class TextDisplay;
 class Player;
-class Ownable;
+class Collectible;
 
 class Controller {
     GameBoard *board;
@@ -28,8 +20,8 @@ class Controller {
 
     void printSymbols();
     bool checkAndUpdateSymbols(const char &symbol);
-    void finishTrade(Player* p1, Player* p2, Ownable *give, Ownable *receive);
-    void finishTrade(Player* p1, Player* p2, int money, Ownable *property);
+    void finishTrade(Player* p1, Player* p2, Collectible *give, Collectible *receive);
+    void finishTrade(Player* p1, Player* p2, int money, Collectible *property);
     void endTurn(Player** p);
 
 public:
@@ -42,7 +34,7 @@ public:
     bool unmortgage(Player* p, const std::string& propertyName);
     bool trade(Player* p, const std::string& in);
     bool improve(Player* p, const std::string& in);
-    bool payDebt(Ownable* property, Player* p);
+    bool payDebt(Collectible* property, Player* p);
 
     bool handleLowBalance(Player* player, int moneyNeeded, bool forced=false);
     bool payJailFee(Player* p);

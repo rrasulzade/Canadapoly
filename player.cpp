@@ -1,13 +1,5 @@
-//
-//  player.cpp
-//  BB7K
-//
-//  Created by Rasul on 2018-10-08.
-//  Copyright © 2018 ***Rasul Rasulzade***. All rights reserved.
-//
-
 #include "player.hpp"
-#include "ownable.hpp"
+#include "collectible.hpp"
 
 #define START_BALANCE           500
 
@@ -80,11 +72,11 @@ void Player::setJail(bool value){
     this->inJail = value;
 }
 
-void Player::attachProperty(Ownable* property){
+void Player::attachProperty(Collectible* property){
     this->properties.push_back(property);
 }
 
-void Player::detachProperty(Ownable* property){
+void Player::detachProperty(Collectible* property){
     int index = 0;
     for(auto it : properties){
         if(it == property) break;
@@ -93,7 +85,7 @@ void Player::detachProperty(Ownable* property){
     this->properties.erase(properties.begin() + index-1);
 }
 
-bool Player::hasMonopoly(const Ownable* property) const{
+bool Player::hasMonopoly(const Collectible* property) const{
     int totalBlocks = countOwnedBlocks(property);
     // const string monopolyBlock = property->getMonopolyBlock();
     // int totalBlocks = property->getTotalBlocks();
@@ -110,7 +102,7 @@ bool Player::hasMonopoly(const Ownable* property) const{
     return false;
 }
 
-int Player::countOwnedBlocks(const Ownable* property) const{
+int Player::countOwnedBlocks(const Collectible* property) const{
     const string monopolyBlock = property->getMonopolyBlock();
     int totalBlocks = 0;
     for(int i = 0; i < properties.size(); i++){

@@ -1,11 +1,3 @@
-//
-//  player.hpp
-//  BB7K
-//
-//  Created by Rasul on 2018-10-08.
-//  Copyright © 2018 ***Rasul Rasulzade***. All rights reserved.
-//
-
 #ifndef player_hpp
 #define player_hpp
 
@@ -13,9 +5,7 @@
 #include <string>
 #include <vector>
 
-// #include "ownable.hpp"
-
-class Ownable;
+class Collectible;
 
 class Player {
     const std::string name;
@@ -25,7 +15,7 @@ class Player {
     bool inJail;
     unsigned int money;
     int position;
-    std::vector<Ownable* > properties;
+    std::vector<Collectible* > properties;
 
     static int playerID;
 
@@ -33,8 +23,8 @@ public:
     Player(const std::string name, const char piece, int position);
     ~Player();
 
-    bool hasMonopoly(const Ownable* property) const;
-    int countOwnedBlocks(const Ownable* property) const;
+    bool hasMonopoly(const Collectible* property) const;
+    int countOwnedBlocks(const Collectible* property) const;
 
     // ACCESSORS
     int getPosition() const;
@@ -52,8 +42,8 @@ public:
     void setPosition(const int position);
     void setJail(bool value);
     void updateBalance(const int amount);
-    void attachProperty(Ownable* property);
-    void detachProperty(Ownable* property);
+    void attachProperty(Collectible* property);
+    void detachProperty(Collectible* property);
 };
 
 #endif /* player_hpp */

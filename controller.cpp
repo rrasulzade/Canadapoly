@@ -1,11 +1,3 @@
-//
-//  controller.cpp
-//  BB7K
-//
-//  Created by Rasul on 2018-10-08.
-//  Copyright © 2018 ***Rasul Rasulzade***. All rights reserved.
-//
-
 #include <sstream>
 #include <fstream>
 
@@ -15,7 +7,7 @@
 #include "textDisplay.hpp"
 #include "player.hpp"
 #include "slot.hpp"
-#include "ownable.hpp"
+#include "collectible.hpp"
 #include "academic.hpp"
 
 #define MAX_PLAYER          8
@@ -272,7 +264,7 @@ void Controller::play(){
                             cout << "You've just bought a new property!" << endl;
                             break;
                         } else {
-                            Ownable* property = dynamic_cast<Ownable*>(board->getSlotByID(playerCurPosition));
+							Collectible* property = dynamic_cast<Collectible*>(board->getSlotByID(playerCurPosition));
                             if(!handleLowBalance(player, property->getCost())) {
                                 in = "auction";
                             } else {
@@ -288,7 +280,7 @@ void Controller::play(){
                     }
                 }
             } else if(board->isSlotOwned(playerCurPosition)){
-                Ownable* property = dynamic_cast<Ownable*>(board->getSlotByID(playerCurPosition));
+				Collectible* property = dynamic_cast<Collectible*>(board->getSlotByID(playerCurPosition));
                 if(property->getOwner() != player){
                     debtPaid = payDebt(property, player);
                 }
@@ -446,7 +438,7 @@ bool Controller::handleLowBalance(Player* player, int moneyNeeded, bool forced){
 
 
 bool Controller::mortgage(Player* p, const std::string& propertyName){
-    Ownable* property = dynamic_cast<Ownable*>(board->getSlotByName(propertyName));
+	Collectible* property = dynamic_cast<Collectible*>(board->getSlotByName(propertyName));
     if(property == nullptr){
         cout << "Invalid input. " << propertyName << " is not a valid propety to mortgage." << endl;
         return false;
@@ -462,7 +454,7 @@ bool Controller::mortgage(Player* p, const std::string& propertyName){
 }
 
 bool Controller::unmortgage(Player* p, const std::string& propertyName){
-    Ownable* property = dynamic_cast<Ownable*>(board->getSlotByName(propertyName));
+	Collectible* property = dynamic_cast<Collectible*>(board->getSlotByName(propertyName));
     int cost = property->getCost()/2 * 1.10;
 
     if(property == nullptr){
@@ -518,7 +510,7 @@ bool Controller::trade(Player* p, const string& in){
             return status;
         }
 
-        Ownable *property = dynamic_cast<Ownable*>(board->getSlotByName(receive));
+		Collectible *property = dynamic_cast<Collectible*>(board->getSlotByName(receive));
         money = stoi(give);
         if(!property){
             cout << "Trade is rejected. "<< receive << " is not a valid property for trading." << endl;
@@ -532,7 +524,7 @@ bool Controller::trade(Player* p, const string& in){
         }
     }
     else if(isNumber(receive)) {   // trade a property in return of money
-        Ownable *property = dynamic_cast<Ownable*>(board->getSlotByName(give));
+		Collectible *property = dynamic_cast<Collectible*>(board->getSlotByName(give));
         money = stoi(receive);
 
         if(!property){
@@ -547,8 +539,8 @@ bool Controller::trade(Player* p, const string& in){
         }
 
     } else {                             // trade a property in return of a property
-        Ownable *propertyGive = dynamic_cast<Ownable*>(board->getSlotByName(give));
-        Ownable *propertyReceive = dynamic_cast<Ownable*>(board->getSlotByName(receive));
+		Collectible *propertyGive = dynamic_cast<Collectible*>(board->getSlotByName(give));
+		Collectible *propertyReceive = dynamic_cast<Collectible*>(board->getSlotByName(receive));
 
         if(!propertyGive){
             cout << "Trade is rejected. " << give << " is not a valid property for trading." << endl;
@@ -572,7 +564,7 @@ bool Controller::trade(Player* p, const string& in){
 }
 
 
-void Controller::finishTrade(Player* p1, Player* p2, Ownable *give, Ownable *receive){
+void Controller::finishTrade(Player* p1, Player* p2, Collectible *give, Collectible *receive){
     cout << "A message for " << p2->getName() << ": " << endl;
     cout << p1->getName() << " offers you " <<give->getName()<< " for "<<receive->getName()<<"."<<endl;
 
@@ -597,7 +589,7 @@ void Controller::finishTrade(Player* p1, Player* p2, Ownable *give, Ownable *rec
 }
 
 
-void Controller::finishTrade(Player* p1, Player* p2, int money, Ownable *property){
+void Controller::finishTrade(Player* p1, Player* p2, int money, Collectible *property){
     if (money < 0){
         money *= -1;
         cout << "A message for " << p1->getName() << ": " << endl;
@@ -701,7 +693,7 @@ bool Controller::improve(Player* p, const string& in){
 }
 
 
-bool Controller::payDebt(Ownable* property, Player* p){
+bool Controller::payDebt(Collectible* property, Player* p){
     int debt = property->getRentalCost(p);
     string ownerName = property->getOwner()->getName();
     if(debt == 4 || debt == 10){
