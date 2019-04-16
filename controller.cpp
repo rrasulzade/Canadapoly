@@ -8,16 +8,16 @@
 #include "player.hpp"
 #include "slot.hpp"
 #include "collectible.hpp"
-#include "academic.hpp"
+#include "vicinity.hpp"
 
-#define MAX_PLAYER          8
-#define MIN_PLAYER          2
-#define MAX_DOUBLES         3
-#define OSAP_LOCATION       0
-#define TUTION_LOCATION     4
-#define JAIL_LOCATION       10
-#define COOP_LOCATOION      38
-#define JAIL_FEE            50
+#define MAX_PLAYER              8
+#define MIN_PLAYER              2
+#define MAX_DOUBLES             3
+#define START_LOCATION          0
+#define INCOME_TAX_LOCATION     4
+#define TIMS_LOCATION           10
+#define SALES_TAX_LOCATOION     38
+#define TIMS_LINE_FEE           50
 
 using namespace std;
 
@@ -64,24 +64,28 @@ bool Controller::checkAndUpdateSymbols(const char &symbol){
 
 void Controller::initialize(){
     string in;
-    cout << "Please, enter the number of players in range from 2 to 8:" << endl;
+    // print banner
+    td->printBanner();
+
+    // set up game
     while(1){
+        cout << "Please enter number of players (2-8):" << endl;
         getline(cin, in);
         stringstream ss(in);
-        if( ss >> totalPlayers && (totalPlayers >=MIN_PLAYER && totalPlayers <= MAX_PLAYER)) {
+        if( ss >> totalPlayers && (totalPlayers >= MIN_PLAYER && totalPlayers <= MAX_PLAYER)) {
             break;
         }
-        cout << "Invalid number of players! Enter a valid number of players:" << endl;
+        cout << "Invalid number of players!" << endl;
     }
 
     board->initializePlayers(totalPlayers);
     int i = 0;
     while(i < totalPlayers){
-        cout<<"------------------ PLAYER# " << i+1 << " ------------------"<< endl;
-        cout<<"Please enter your NAME and the corresponding SYMBOL you want to use ";
-        cout<<"to represent you."<<endl;
+        cout << "\n";
+        cout<<"------------------ PLAYER " << i+1 << " ------------------"<< endl;
+        cout<<"Please enter your NAME and choose your SYMBOL from the following list:"<<endl;
         printSymbols();
-        cout<<"The format of the input should be 'NAME SYMBOL' followed by enter."<<endl;
+        cout<<"Note: input format is 'NAME SYMBOL'"<<endl;
 
         getline(cin, in);
         stringstream ss(in);
@@ -89,11 +93,11 @@ void Controller::initialize(){
         string name = "", symbol = "";
         ss >> skipws >> name >> symbol;
         if(name.empty() || symbol.empty() || symbol.size() > 1 || !checkAndUpdateSymbols(symbol[0])){
-            cout << "\n\tInvalid or missing input! Please, try to re-enter details.\n\n" << endl;
+            cout << "\nInvalid or missing input! Please, try to re-enter details.\n\n" << endl;
             continue;
         }
 
-        Player* player = board->addPlayer(i, name, symbol[0], OSAP_LOCATION);
+        Player* player = board->addPlayer(i, name, symbol[0], START_LOCATION);
         const pair<int, int> location = board->getLocationBySlotID(player->getPosition());
         td->movePlayer(player, location);
 
@@ -112,28 +116,28 @@ void Controller::play(){
     while(1){
         string in;
         stringstream ss;
-        bool inJail = player->isInJail();
+        bool inTims = player->isInTims();
         if(debtPaid){
-            cout << "- - - Player " << player->getPiece() << " turn - - -" << endl;
+            cout << "- - - - Player " << player->getPiece() << "'s turn - - - -" << endl;
             cout << "\n+ + + + Enter one of the following commands to proceed + + + + + + + + + + + +" << endl;
             cout << "+ 'assets'\t\t\t\t to print your total assets" << endl;
             cout << "+ 'mortgage <property name>'\t\t to mortgage a property" << endl;
             cout << "+ 'unmortgage <property name>'\t\t to unmortgage a property" << endl;
             cout << "+ 'trade <name> <give> <receive>'\t to offer a trade" << endl;
             cout << "+ 'improve <property> buy/sell'\t\t to buy/sell an improvement" << endl;
-            if(inJail) cout << "+ 'pay' \t\t\t\t to pay $50 fee to leave jail" << endl;
+            if(inTims) cout << "+ 'pay' \t\t\t\t to pay $50 fee to leave Tims line" << endl;
             if(!rolled)
                 cout << "+ 'roll'\t\t\t\t to roll dice" << endl;
             else
                 cout << "+ 'next'\t\t\t\t to give control to the next player" << endl;
-            cout << "+ + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +\n" << endl;
+            cout << "+ + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + \n" << endl;
 
             // read user inputs
             getline(cin, in);
             ss.str(in);
             ss >> in;
         } else {
-            cout << "All debts must be paid" << endl;
+            cout << "All debts must be paid!" << endl;
         }
 
 
@@ -170,13 +174,13 @@ void Controller::play(){
         }
         else if(in == "improve" || in == "im"){
             if(!improve(player, ss.str())){
-                cout << "Use 'improve <property> buy/sell' to sell an improvement." << endl;
+                cout << "Use 'improve <property> buy/sell' to buy/sell an improvement." << endl;
                 continue;
             }
             cout << *td << endl;
         }
         else if(in == "pay"){
-            if(!payJailFee(player)){
+            if(!payTimsLineFee(player)){
                 cout << "PLAYER LEFT TO BANKRUPTCY" << endl;
             }
         }
@@ -189,12 +193,12 @@ void Controller::play(){
 
             if(!board->isPair()){
                 rolled = true;
-                if(inJail){
+                if(inTims){
                     player->decreaseDoublesCounter();
-                    if(player->getDoublesCounter() == MAX_DOUBLES - MAX_DOUBLES) {
+                    if(player->getDoublesCounter() == 0) {
                         cout << "This was your last chance to try to roll doubles but no success. " << endl;
-                        cout << "You must pay to leave the jail now. " << endl;
-                        if(!payJailFee(player)){
+                        cout << "You must pay to leave Tims line now. " << endl;
+                        if(!payTimsLineFee(player)){
                             cout << "PLAYER LEFT TO BANKRUPTCY" << endl;
                         }
                     }
@@ -202,8 +206,8 @@ void Controller::play(){
                     player->setDoublesCounter(0);
                 }
             }else{
-                if(inJail){
-                    player->setJail(false);
+                if(inTims){
+                    player->setTims(false);
                     player->setDoublesCounter(0);
                     rolled = true;
                 }else{
@@ -212,9 +216,9 @@ void Controller::play(){
             }
 
             if(player->getDoublesCounter() == MAX_DOUBLES){
-                message << "Jail time. You rolled 3 doubles in a row." << endl;
-                player->setJail(true);
-                player->setPosition(JAIL_LOCATION);
+                message << "Tims coffee time. You rolled 3 doubles in a row." << endl;
+                player->setTims(true);
+                player->setPosition(TIMS_LOCATION);
                 diceSum = 0;
             } else {
                 board->movePlayer(curPlayerID, diceSum);
@@ -229,39 +233,39 @@ void Controller::play(){
             if (!message.str().empty() ) cout << message.str() << endl;
 
 
-            if(player->isInJail()){
+            if(player->isInTims()){
                 endTurn(&player);
                 continue;
             }
 
             if(playerCurPosition - diceSum < 0 ){
-                board->collectOSAP(curPlayerID);
+                board->collectIncome(curPlayerID);
             }
 
-            if(playerCurPosition == COOP_LOCATOION &&
-                !(board->tryPayCoopFee(curPlayerID)) &&
-                !handleLowBalance(player, COOP_FEE, true))
-            {
-                cout << "PLAYER LEFT TO BANKRUPTCY" << endl;
-
-            }
-            else if(playerCurPosition == TUTION_LOCATION &&
-                    !(board->tryPayTuitionFee(curPlayerID)) &&
-                    !handleLowBalance(player, TUITION_FEE, true))
+            if((playerCurPosition == SALES_TAX_LOCATOION &&
+                !(board->tryPayTax(curPlayerID, SALES_TAX)) &&
+                !handleLowBalance(player, SALES_TAX, true)) ||
+                (playerCurPosition == INCOME_TAX_LOCATION &&
+                !(board->tryPayTax(curPlayerID, INCOME_TAX)) &&
+                !handleLowBalance(player, INCOME_TAX, true)))
             {
                 cout << "PLAYER LEFT TO BANKRUPTCY" << endl;
 
             }
             else if(board->isSlotFree(playerCurPosition)){
-                cout << "This slot is free. Do you want to buy or put it on auction? buy/auction " << endl;
-                in.clear();
+                cout << "This slot is available. Do you want to buy or auction? buy/auction " << endl;
+                // print slot details - NAME PRICE -
+                string slotDetails = board->getCollectibleBuyInfo(playerCurPosition);
+                cout << slotDetails << endl;
+
                 while(1){
+                    in.clear();
                     if(in.empty()) getline(cin, in);
                     if(in == "buy" || in == "b"){
                         if(board->tryBuy(curPlayerID, playerCurPosition)){
                             td->addOwner(player);
                             cout << *td << endl;
-                            cout << "You've just bought a new property!" << endl;
+                            cout << "Congrats! You've just bought a new property." << endl;
                             break;
                         } else {
 							Collectible* property = dynamic_cast<Collectible*>(board->getSlotByID(playerCurPosition));
@@ -273,10 +277,11 @@ void Controller::play(){
                         }
                     }
                     else if(in == "auction" || in == "a"){
+                        //auction(curPlayerID, playerCurPosition);
                         break;
                     }
                     else {
-                        cout << "Invalid operation name. Enter 'buy' or 'auction' to proceed: " << endl;
+                        cout << "Invalid operation name. Please enter 'buy' or 'auction' to proceed: " << endl;
                     }
                 }
             } else if(board->isSlotOwned(playerCurPosition)){
@@ -296,13 +301,13 @@ void Controller::play(){
     }
 }
 
-bool Controller::payJailFee(Player* p){
-    if(p->getBalance() < JAIL_FEE && !handleLowBalance(p, JAIL_FEE, true)){
+bool Controller::payTimsLineFee(Player* p){
+    if(p->getBalance() < TIMS_LINE_FEE && !handleLowBalance(p, TIMS_LINE_FEE, true)){
         return false;
     }
 
-    p->updateBalance(-1*JAIL_FEE);
-    p->setJail(false);
+    p->updateBalance(-1*TIMS_LINE_FEE);
+    p->setTims(false);
     p->setDoublesCounter(0);
     return true;
 }
@@ -381,58 +386,6 @@ bool Controller::handleLowBalance(Player* player, int moneyNeeded, bool forced){
     }
 
     return false;
-
-
-    // switch (in) {
-    //     case "assets":
-    //     case "a":{
-    //         td->printAssets(player);
-    //         continue;
-    //     }
-    //     case "mortgage":
-    //     case "m":{
-    //         string property;
-    //         ss >> property;
-    //         if(!mortgage(player, property)){
-    //             cout << "Use 'mortgage <property name>' format to mortgage a property." << endl;
-    //             continue;
-    //         }
-    //         cout << *td << endl;
-    //         break;
-    //     }
-    //     case "trade":
-    //     case "t":{
-    //         if(!trade(player, ss.str())){
-    //             cout << "Use 'trade <name> <give> <receive>' to offer a trade." << endl;
-    //             continue;
-    //         }
-    //         cout << *td << endl;
-    //         break;
-    //     }
-    //     case "improve":
-    //     case "im":{
-    //         string propertyName, action;
-    //         if(!(ss>>propertyName) || !(ss>>action) || action != "sell"){
-    //             cout << "Invalid input. " << endl;
-    //             cout << "Use 'improve <property> sell' to offer a trade." << endl;
-    //         }
-    //         else if(!improve(player, ss.str())){
-    //             cout << "Use 'improve <property> sell' to offer a trade." << endl;
-    //             continue;
-    //         }
-    //         cout << *td << endl;
-    //         break;
-    //     }
-    //     case "bankrupt":
-    //     case "b":{
-    //         break;
-    //     }
-    //     case "cancel":
-    //     case "c":{
-    //         cout << "Operation is cancelled! " << endl;
-    //         break;
-    //     }
-    // }
 }
 
 
@@ -633,7 +586,7 @@ bool Controller::improve(Player* p, const string& in){
         return false;
     }
 
-    Academic* property = dynamic_cast<Academic*>(board->getSlotByName(propertyName));
+    Vicinity* property = dynamic_cast<Vicinity*>(board->getSlotByName(propertyName));
     if(!property){
         cout << propertyName << " is not a valid property for an improvement. " << endl;
         return false;
@@ -663,16 +616,16 @@ bool Controller::improve(Player* p, const string& in){
                 return false;
         }
         if(upgradeLevel == 5){
-            cout << "You've already bought all improvements." << endl;
+            cout << "No improvements to buy." << endl;
             return false;
         }
         upgradeLevel++;
         td->updateImprovement(property->getLocation(), upgradeLevel);
         cost *= -1;
     }
-    else if(action == "sell" && upgradeLevel > 0){
+    else if(action == "sell" && upgradeLevel >= 0){
         if(upgradeLevel == 0){
-            cout << "You've already sold all improvements." << endl;
+            cout << "No improvements to sell." << endl;
             return false;
         }
         td->updateImprovement(property->getLocation(), upgradeLevel);
@@ -712,4 +665,16 @@ bool Controller::payDebt(Collectible* property, Player* p){
 
     cout << "You paid $" << debt << " rental fee to " << ownerName << endl;
     return true;
+}
+
+
+bool Controller::auction(int playerID, int propertyID){
+    Collectible* property = dynamic_cast<Collectible*>(board->getSlotByID(propertyID));
+    cout << "Auction of " << property->getName() << " begins!" << endl;
+    vector<int> participants;
+    // for(int i=0; i < totalPlayers; i++){
+    //     participants.push_back()
+    // }
+
+    return false;
 }

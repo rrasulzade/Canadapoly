@@ -35,12 +35,10 @@ public:
     bool trade(Player* p, const std::string& in);
     bool improve(Player* p, const std::string& in);
     bool payDebt(Collectible* property, Player* p);
+    bool auction(int playerID, int propertyID);
 
     bool handleLowBalance(Player* player, int moneyNeeded, bool forced=false);
-    bool payJailFee(Player* p);
-    // auction
-    // go to tims / get out Tims
-
+    bool payTimsLineFee(Player* p);
 
 };
 

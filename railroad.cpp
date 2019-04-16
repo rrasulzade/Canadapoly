@@ -6,7 +6,7 @@ using namespace std;
 Railroad::Railroad(const std::string name, const pair<int,int> location, const int cost, const int totalMonoBlocks): Collectible(name, location, cost, totalMonoBlocks){}
 Railroad:: ~Railroad(){}
 
-string Residence::getMonopolyBlock() const {
+string Railroad::getMonopolyBlock() const {
     return "Railroad";
 }
 

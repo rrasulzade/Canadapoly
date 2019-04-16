@@ -4,13 +4,10 @@
 #include "textDisplay.hpp"
 #include "controller.hpp"
 
-
 using namespace std;
 
-int main(int argc, const char * argv[]) {
-    // insert code here...
-    std::cout << "Hello, Monopoly!\n";
 
+int main(int argc, const char * argv[]) {
     GameBoard *board = new GameBoard;
     TextDisplay *td = new TextDisplay;
 

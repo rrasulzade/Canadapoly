@@ -4,8 +4,8 @@
 #include <iostream>
 #include <string>
 
-extern const int TUITION_FEE;
-extern const int COOP_FEE;
+extern const int INCOME_TAX;
+extern const int SALES_TAX;
 
 class Player;
 class Slot;
@@ -36,14 +36,14 @@ public:
     void movePlayer(int& curPlayerID, const int& diceSum);
     int rollDice();
     std::string diceResults();
+    std::string getCollectibleBuyInfo(const int& slotID);
     bool isPair();
     bool isSlotFree(const int& slotID);
     bool isSlotOwned(const int& slotID);
     bool isSlotMortgaged(const int& slotID);
     bool tryBuy(const int& playerID, const int& slotID);
-    bool tryPayTuitionFee(int playerID);
-    bool tryPayCoopFee(int playerID);
-    void collectOSAP(int playerID);
+    bool tryPayTax(int playerID, int taxAmount);
+    void collectIncome(int playerID);
 
     void setDice(int d1, int d2);
 };

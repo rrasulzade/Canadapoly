@@ -20,7 +20,7 @@ Vicinity::Vicinity(const string name, const pair<int,int> location, const int co
 
 Vicinity::~Vicinity(){}
 
-string VicinityAcademic::getMonopolyBlock() const{
+string Vicinity::getMonopolyBlock() const{
     return this->monopolyBlock;
 }
 

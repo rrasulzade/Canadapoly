@@ -5,8 +5,10 @@
 #include "vicinity.hpp"
 #include "service.hpp"
 #include "railroad.hpp"
+#include "collectible.hpp"
 #include "redCross.hpp"
 #include "chance.hpp"
+#include <sstream>
 
 #define SLOTS_NUM					40
 #define INCOME						200
@@ -19,9 +21,9 @@ using namespace std;
 GameBoard::GameBoard(): players(nullptr) {
     dice = new Dice();
     slots[0] = new Slot("Collect Income", make_pair(61, 101));
-    slots[1] = new Vicinity("REGINA", make_pair(61, 91), 40, 2, "SC", 50, 0, {2,10,30,90,160,250});
+    slots[1] = new Vicinity("SASKATOON", make_pair(61, 91), 40, 2, "SC", 50, 0, {2,10,30,90,160,250});
     slots[2] = new RedCross("RedCross1", make_pair(61, 81));
-    slots[3] = new Vicinity("SASKATOON", make_pair(61, 71), 60, 2, "SC", 50, 0, {4,20,60,180,320,450});
+    slots[3] = new Vicinity("REGINA", make_pair(61, 71), 60, 2, "SC", 50, 0, {4,20,60,180,320,450});
     slots[4] = new Slot("Income Tax", make_pair(61, 61));
     slots[5] = new Railroad("Canadian Pacific Railroad", make_pair(61, 51), 100, 4);
     slots[6] = new Vicinity("ATHABASCA", make_pair(61, 41), 100, 3, "AB", 50, 0, {6,30,90,270,400,550});
@@ -49,15 +51,15 @@ GameBoard::GameBoard(): players(nullptr) {
     slots[28] = new Service("Phone Service", make_pair(1, 81), 150, 2);
     slots[29] = new Vicinity("MONTREAL", make_pair(1, 91), 280, 3, "QC", 150, 0, {24,120,360,850,1025,1200});
     slots[30] = new Slot("Go to Tims", make_pair(1, 101));
-    slots[31] = new Vicinity("ROCKIES", make_pair(7, 101), 300, 3, "Attr1", 200, 0, {26,130,390,900,1100,1275});
-    slots[32] = new Vicinity("NIAGARA", make_pair(13, 101), 300, 3, "Attr1", 200, 0, {26,130,390,900,1100,1275});
+    slots[31] = new Vicinity("NIAGARA", make_pair(7, 101), 300, 3, "Attr1", 200, 0, {26,130,390,900,1100,1275});
+    slots[32] = new Vicinity("CNTOWER", make_pair(13, 101), 300, 3, "Attr1", 200, 0, {26,130,390,900,1100,1275});
     slots[33] = new RedCross("RedCross3", make_pair(19, 101));
-    slots[34] = new Vicinity("CNTOWER", make_pair(25, 101), 320, 3, "Attr1", 200, 0, {28, 150, 450, 1000, 1200, 1400});
+    slots[34] = new Vicinity("ROCKIES", make_pair(25, 101), 320, 3, "Attr1", 200, 0, {28, 150, 450, 1000, 1200, 1400});
     slots[35] = new Railroad("Ottawa Valley Railroad", make_pair(31, 101), 100, 4);
     slots[36] = new Chance("Chance3", make_pair(37, 101));
-    slots[37] = new Vicinity("BANFF", make_pair(43, 101), 350, 2, "Attr2", 200, 0, {35,175,500,1100,1300,1500});
+    slots[37] = new Vicinity("ALGONQUIN", make_pair(43, 101), 350, 2, "Attr2", 200, 0, {35,175,500,1100,1300,1500});
     slots[38] = new Slot("Sales Tax Fee", make_pair(49, 101));
-    slots[39] = new Vicinity("ALGONQUIN", make_pair(55, 101), 400, 2, "Attr2", 200, 0, {50,200,600,1400,1700,2000});
+    slots[39] = new Vicinity("BANFF", make_pair(55, 101), 400, 2, "Attr2", 200, 0, {50,200,600,1400,1700,2000});
 
 }
 
@@ -101,6 +103,14 @@ Slot* GameBoard::getSlotByName(const string& slotName){
         }
     }
     return  nullptr;
+}
+
+string GameBoard::getCollectibleBuyInfo(const int& slotID){
+    ostringstream ss;
+    Collectible* property = dynamic_cast<Collectible*>(slots[slotID]);
+    ss << "Property name: " << property->getName() << "\n" << "Property costs: $" << property->getCost() << endl;
+
+    return ss.str();
 }
 
 int GameBoard::rollDice(){
@@ -169,30 +179,29 @@ bool GameBoard::tryBuy(const int& playerID, const int& slotID){
     return true;
 }
 
-bool GameBoard::tryPayCoopFee(int playerID){
+
+bool GameBoard::tryPayTax(int playerID, int taxAmount){
+    stringstream message;
     Player* p = players[playerID];
-    cout << "You landed on Coop Fee slot and must pay $" << COOP_FEE  << " fee."<< endl;
-    if(p->getBalance() < COOP_FEE){
+    if(taxAmount == INCOME_TAX)
+    {
+        message << "You landed on Income taxt slot and must pay $" << INCOME_TAX << " fee."<< endl;
+    }
+    else
+    {
+        message << "You landed on Sales tax slot and must pay $" << SALES_TAX  << " fee."<< endl;
+    }
+
+    cout << message.str() << endl;
+    if(p->getBalance() < taxAmount){
         return false;
     }
-    p->updateBalance(-1*COOP_FEE);
+    p->updateBalance(-1*taxAmount);
     cout << "You paid the fee and can continue game. " << endl;
     return true;
 }
 
-
-bool GameBoard::tryPayTuitionFee(int playerID){
+void GameBoard::collectIncome(int playerID){
     Player* p = players[playerID];
-    cout << "You landed on Tuition slot and must pay $" << TUITION_FEE << " fee."<< endl;
-    if(p->getBalance() < TUITION_FEE){
-        return false;
-    }
-    p->updateBalance(-1*TUITION_FEE);
-    cout << "You paid the fee and can continue game. " << endl;
-    return true;
-}
-
-void GameBoard::collectOSAP(int playerID){
-    Player* p = players[playerID];
-    p->updateBalance(OSAP_FEE);
+    p->updateBalance(INCOME);
 }

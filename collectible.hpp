@@ -19,7 +19,7 @@ class Collectible: public Slot {
     // add enum for status sold free mortgaged
 public:
     enum {FREE=0, OWNED=1, MORTGAGED=2};
-	Collectible(const std::string name, const std::pair<int,int> location, int status, const int cost, const int totalMonoBlocks);
+	Collectible(const std::string name, const std::pair<int,int> location, const int cost, const int totalMonoBlocks);
     ~Collectible();
 
     int getStatus() const;

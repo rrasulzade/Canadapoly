@@ -10,13 +10,13 @@ int Player::playerID = 0;
 
 Player::Player(const string name, const char piece, int position): name(name), piece(piece), id(playerID++), money(START_BALANCE), position(position) {
     doublesCounter = 0;
-    inJail = false;
+    inTims = false;
 }
 
 Player::~Player(){}
 
-bool Player::isInJail() const{
-    return this->inJail;
+bool Player::isInTims() const{
+    return this->inTims;
 }
 
 int Player::getID() const{
@@ -33,6 +33,10 @@ char Player::getPiece() const{
 
 int Player::getPosition() const{
     return this->position;
+}
+
+vector<Collectible* > Player::getProperties() const{
+    return this->properties;
 }
 
 int Player::getBalance() const{
@@ -68,8 +72,8 @@ void Player::setPosition(const int position){
     this->position = position;
 }
 
-void Player::setJail(bool value){
-    this->inJail = value;
+void Player::setTims(bool value){
+    this->inTims = value;
 }
 
 void Player::attachProperty(Collectible* property){

@@ -12,7 +12,7 @@ class Player {
     const char piece;
     const int id;
     int doublesCounter;
-    bool inJail;
+    bool inTims;
     unsigned int money;
     int position;
     std::vector<Collectible* > properties;
@@ -32,15 +32,16 @@ public:
     int getID() const;
     char getPiece() const;
     int getBalance() const;
+    std::vector<Collectible* > getProperties() const;
     int getPropertyCount() const;
     int getDoublesCounter() const;
-    bool isInJail() const;
+    bool isInTims() const;
 
     void increaseDoublesCounter(int val=1);
     void decreaseDoublesCounter(int val=1);
     void setDoublesCounter(int val);
     void setPosition(const int position);
-    void setJail(bool value);
+    void setTims(bool value);
     void updateBalance(const int amount);
     void attachProperty(Collectible* property);
     void detachProperty(Collectible* property);

@@ -8,6 +8,7 @@
 
 #include "textDisplay.hpp"
 #include "player.hpp"
+#include "collectible.hpp"
 
 #include <string>
 #include <iostream>
@@ -58,6 +59,15 @@ TextDisplay::TextDisplay() {
 
 TextDisplay::~TextDisplay(){}
 
+void TextDisplay::printBanner(){
+    ifstream in;
+    in.open("banner.txt");
+    string a;
+
+    while(getline(in, a)){
+        cout << a << endl;
+    }
+}
 
 ostream &operator<<(ostream &out, const TextDisplay &td){
     for(int i = 0; i < MAX_ROW; i++) {
@@ -158,10 +168,14 @@ void TextDisplay::printAssets(const Player* p){
     const string name = p->getName();
     const int balance = p->getBalance();
     const int propertyCount = p->getPropertyCount();
+    std::vector<Collectible* > properties = p->getProperties();
 
     cout << "Player " << playerID+1 << " assets:" << endl;
     cout << "Name: " << name << endl;
     cout << "Symbol: " << symbol << endl;
-    cout << "Remaining balance: " << balance << endl;
+    cout << "Remaining balance: $" << balance << endl;
     cout << "Number of properties: " << propertyCount << endl;
+    for(int i=0; i < properties.size(); i++){
+        cout <<"\t" << i+1 << ". " << properties[i]->getName() << endl;
+    }
 }
