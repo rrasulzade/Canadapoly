@@ -1,7 +1,7 @@
 #include "player.hpp"
 #include "collectible.hpp"
 
-#define START_BALANCE           500
+#define START_BALANCE           1500
 
 
 using namespace std;

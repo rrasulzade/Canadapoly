@@ -31,7 +31,7 @@ public:
     void printBanner();
     void movePlayer(const Player* player, const std::pair<int, int> location);
     void printAssets(const Player*);
-    void addOwner(const Player*);
+    void addOwner(const Player*, const std::pair<int, int> *loc2 = nullptr);
     void updateOwner(const std::pair<int, int> &loc1, const std::pair<int, int> &loc2);
     void updateOwner(const char& ownerSymbol, const std::pair<int, int> &loc);
     void updateMortgage(const std::pair<int, int> location);

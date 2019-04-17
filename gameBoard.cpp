@@ -87,6 +87,12 @@ Player* GameBoard::addPlayer(const int id, const std::string name, const char sy
     return this->players[id];
 }
 
+vector<Player*> GameBoard::getPlayersList(){
+    vector<Player*> playerList;
+    for(int i = 0; i<totalPlayers; i++)
+        playerList.push_back(players[i]);
+    return playerList;
+}
 
 pair<int,int> GameBoard::getLocationBySlotID(const int slotID){
     return slots[slotID]->getLocation();

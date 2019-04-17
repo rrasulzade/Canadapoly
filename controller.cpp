@@ -1,6 +1,6 @@
 #include <sstream>
 #include <fstream>
-
+#include <set>
 
 #include "controller.hpp"
 #include "gameBoard.hpp"
@@ -277,7 +277,9 @@ void Controller::play(){
                         }
                     }
                     else if(in == "auction" || in == "a"){
-                        //auction(curPlayerID, playerCurPosition);
+                        if(!auction(curPlayerID, playerCurPosition)){
+                            cout << "PLAYER LEFT TO BANKRUPTCY" << endl;
+                        }
                         break;
                     }
                     else {
@@ -670,11 +672,69 @@ bool Controller::payDebt(Collectible* property, Player* p){
 
 bool Controller::auction(int playerID, int propertyID){
     Collectible* property = dynamic_cast<Collectible*>(board->getSlotByID(propertyID));
-    cout << "Auction of " << property->getName() << " begins!" << endl;
-    vector<int> participants;
-    // for(int i=0; i < totalPlayers; i++){
-    //     participants.push_back()
-    // }
+    int propertyCost = property->getCost();
+    int highestBid = propertyCost*0.10;
+    cout << "Auction for " << property->getName() << " started!" << endl;
+    cout << "Property costs:\t$" << propertyCost << endl;
+    cout << "Initial bid:\t$" << highestBid << endl;
 
-    return false;
+    cout << endl;
+    cout << "NOTE: A player will be eliminated from the auction, if the entered"<< endl;
+    cout << "amount is equal or lower than the highest bid." << endl;
+    cout << endl;
+
+    vector<Player*>  participants = board->getPlayersList();
+    for(unsigned int i=0; participants.size() > 1;){
+        int bid;
+        int player_index = i % participants.size();
+        cout << "Player " << participants[player_index]->getPiece() << " enter your bid:" << endl;
+        while(!(cin >> bid)){
+            cin.clear();
+            cin.ignore(1000, '\n');
+            cout << "Invalid input! Please enter valid bid" << endl;
+        }
+
+        if(bid > highestBid){
+            highestBid = bid;
+            cout << "New highest bid: $" << highestBid << endl;
+        }
+        else{
+            cout << "You bid is equal or lower than the highest bid." << endl;
+            cout << "You will be eliminated from the auction." << endl;
+            cout << "Do you want to proceed? (y/n)" << endl;
+
+            string in;
+            cin.clear();
+            cin.ignore(1000, '\n');
+            getline(cin, in);
+            while(in != "y" && in != "n" && in != "yes" && in != "no" && in != "Y" && in != "N"){
+                in.clear();
+                // cin.ignore(1000, '\n');
+                cout << "Invalid input! Do you want to proceed? (y/n)" << endl;
+                getline(cin, in);
+            }
+
+            if(in == "y" || in == "Y"){
+                participants.erase(participants.begin() + player_index);
+                i = player_index;
+            }
+            continue;
+        }
+
+        i++;
+    }
+
+    if(highestBid > participants[0]->getBalance() && !handleLowBalance(participants[0], highestBid, true)) {
+            return false;
+    }
+
+    const char winnerPiece = participants[0]->getPiece();
+    participants[0]->updateBalance(-1*highestBid);
+    pair<int, int> loc = property->getLocation();
+    td->addOwner(participants[0], &loc);
+    cout << *td << endl;
+    cout << "Auction is closed. ";
+    cout << "Congrats Player "<< winnerPiece << "! You've just bought a new property.\n" << endl;
+
+    return true;
 }

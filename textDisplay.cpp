@@ -106,13 +106,17 @@ void TextDisplay::movePlayer(const Player* player, const pair<int, int> location
 }
 
 
-void TextDisplay::addOwner(const Player* player){
+void TextDisplay::addOwner(const Player* player, const pair<int, int> *loc2){
     const char symbol = player->getPiece();
     const int playerID = player->getID();
     string owner = "owner: ";
     owner += symbol;
 
-    const pair<int, int> currentLocation = playerCurPosition[playerID];
+    pair<int, int> currentLocation = playerCurPosition[playerID];
+    if(loc2) {
+        currentLocation.first = (*loc2).first;
+        currentLocation.second = (*loc2).second;
+    }
     const int col = currentLocation.second;
     const int row = currentLocation.first + OWNER_ROW_OFFSET;
 

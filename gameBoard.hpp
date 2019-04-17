@@ -29,6 +29,7 @@ public:
     std::pair<int,int> getLocationBySlotID(const int slotID);
     Player* getPlayerByID(const int& playerID);
     Player* getPlayerByName(const std::string& name);
+    std::vector<Player*> getPlayersList();
     Slot* getSlotByID(const int& slotID);
     Slot* getSlotByName(const std::string& slotName);
 
