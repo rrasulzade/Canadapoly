@@ -8,7 +8,7 @@
 #include "player.hpp"
 #include "slot.hpp"
 #include "collectible.hpp"
-#include "vicinity.hpp"
+#include "property.hpp"
 
 #define MAX_PLAYER              8
 #define MIN_PLAYER              2
@@ -588,7 +588,7 @@ bool Controller::improve(Player* p, const string& in){
         return false;
     }
 
-    Vicinity* property = dynamic_cast<Vicinity*>(board->getSlotByName(propertyName));
+    Property* property = dynamic_cast<Property*>(board->getSlotByName(propertyName));
     if(!property){
         cout << propertyName << " is not a valid property for an improvement. " << endl;
         return false;
