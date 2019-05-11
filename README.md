@@ -12,7 +12,7 @@ Factory, Singletone and Observer design patterns were used to implement this gam
 
 
 FOLLOW THE INSTRUCTION BELOW TO PLAY THE GAME:
-1.clone the repository on your envirionment
-2.run make file on terminal
-3.run ./canadapoly executable to start the game
-4.Have fun and good luck!
+* 1.clone the repository on your envirionment
+* 2.run make file on terminal
+* 3.run ./canadapoly executable to start the game
+* 4.Have fun and good luck!
