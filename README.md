@@ -16,3 +16,8 @@ FOLLOW THE INSTRUCTION BELOW TO PLAY THE GAME:
 * 2.run make file on terminal
 * 3.run ./canadapoly executable to start the game
 * 4.Have fun and good luck!
+
+Design patterns used:
+* Observer
+* Singleton
+* Mediator/Controller
