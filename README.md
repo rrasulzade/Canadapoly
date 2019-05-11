@@ -6,7 +6,7 @@ Designed and Implemented Canadian edition of Monopoly game. Currently, the follo
 * trade properties or money with other players
 * buy/sell houses to improve your monopoly
 * auctioning an unwanted property
-* going to jail (Tim Hortons line) and bailing out
+* get in/out jail (Tim Hortons line) and bailing out
 
 Factory, Singletone and Observer design patterns were used to implement this game.
 
